@@ -2,8 +2,8 @@
 
 # Define filenames and directories
 CLIENT_SCRIPT_NAME="client.sh"
-CLIENT_SCRIPT_PATH="$HOME/bin/$CLIENT_SCRIPT_NAME"
-BIN_DIR="$HOME/bin"
+CLIENT_SCRIPT_PATH="$HOME/$CLIENT_SCRIPT_NAME"
+BIN_DIR="$HOME/usr/local/bin"
 
 # Create the client.sh file with the required content
 echo "Creating $CLIENT_SCRIPT_NAME with the client script content..."
@@ -62,7 +62,6 @@ while true; do
 done
 EOF
 
-# Create ~/bin if it doesn't exist
 echo "Creating ~/bin directory if it doesn't exist..."
 mkdir -p "$BIN_DIR"
 
@@ -82,13 +81,17 @@ if ! grep -q "$BIN_DIR" "$HOME/.bashrc"; then
 fi
 
 echo "Adding alias for the HTTP server..."
-if ! grep -q "alias server='python3 -m http.server'" "$HOME/.bashrc"; then
-    echo "alias server='python3 -m http.server'" >> "$HOME/.bashrc"
+if ! grep -q "alias server='python3 -m http.server'" "$HOME/.bash_aliases"; then
+    echo "alias server='python3 -m http.server'" >> "$HOME/.bash_aliases"
+fi
+
+echo "Adding alias for the Client..."
+if ! grep -q "alias download='bash client.sh'" "$HOME/.bash_aliases"; then
+    echo "alias download='bash client.sh'" >> "$HOME/.bash_aliases"
 fi
 
 # Reload ~/.bashrc
-echo "Reloading ~/.bashrc..."
-source "$HOME/.bashrc"
+echo "Reloading ~/.bash_aliases..."
+source "$HOME/.bash_aliases"
 
 echo "Setup complete. You can now use $CLIENT_SCRIPT_NAME from anywhere."
-

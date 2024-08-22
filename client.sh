@@ -1,9 +1,13 @@
 #!/bin/bash
 
+# Prompt user for IP address
+read -p "Enter the IP address of the server: " SERVER_IP
+SERVER_PORT=8000
+
 # Check if the server is running
-if ! curl -s http://localhost:8000 > /dev/null; then
+if ! curl -s http://$SERVER_IP:$SERVER_PORT > /dev/null; then
     echo "Starting HTTP server..."
-    python3 -m http.server &
+    python3 -m http.server --bind $SERVER_IP $SERVER_PORT &
     sleep 2
 fi
 
@@ -22,16 +26,16 @@ while true; do
     case $option in
         1)
             echo "Listing directory contents..."
-            curl -s http://localhost:8000 | grep -oP '(?<=href=")[^"]*'
+            curl -s http://$SERVER_IP:$SERVER_PORT | grep -oP '(?<=href=")[^"]*'
             ;;
         2)
             read -p "Enter the filename to download: " filename
-            curl -O http://localhost:8000/$filename
+            curl -O http://$SERVER_IP:$SERVER_PORT/$filename
             echo "$filename downloaded."
             ;;
         3)
             read -p "Enter the filename to open: " filename
-            curl -s http://localhost:8000/$filename > $filename
+            curl -s http://$SERVER_IP:$SERVER_PORT/$filename > $filename
             xdg-open $filename
             ;;
         4)

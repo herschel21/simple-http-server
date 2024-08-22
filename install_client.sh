@@ -81,6 +81,11 @@ if ! grep -q "$BIN_DIR" "$HOME/.bashrc"; then
     echo "export PATH=\"$BIN_DIR:\$PATH\"" >> "$HOME/.bashrc"
 fi
 
+echo "Adding alias for the HTTP server..."
+if ! grep -q "alias server='python3 -m http.server'" "$HOME/.bashrc"; then
+    echo "alias server='python3 -m http.server'" >> "$HOME/.bashrc"
+fi
+
 # Reload ~/.bashrc
 echo "Reloading ~/.bashrc..."
 source "$HOME/.bashrc"
